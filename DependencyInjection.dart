@@ -3,13 +3,17 @@ import 'dart:mirrors';
 void main() {
   DependencyInjection inj = DependencyInjection();
 
-  var end = inj.get(Endpoint);
+  inj.preload([Endpoint]);
 
   print(inj.dependencies);
 }
 
 class DependencyInjection {
   List<dynamic> dependencies = [];
+
+  void preload(List<Type> types) {
+    types.forEach((t) => get(t));
+  }
 
   dynamic get(Type type) {
     if(!_isInjectable(reflectType(type))){
