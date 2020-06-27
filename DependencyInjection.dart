@@ -34,7 +34,7 @@ class DependencyInjection {
       List params = paramMirrors.map((p) {
         Type t = p.type.reflectedType;
         if (currParents.contains(t)) {
-          throw ("Recursive dependency");
+          throw ("Recursive dependency ${type} required for ${t} or child dependency, but ${type} requires ${t}");
         }
 
         if (!_isInjectable(p.type)) {
@@ -97,7 +97,10 @@ class OtherClass {
 class Foo {}
 
 @Injectable()
-class Bar {}
+class Bar {
+  Endpoint e;
+  Bar(this.e);
+}
 
 class Injectable {
   const Injectable();
